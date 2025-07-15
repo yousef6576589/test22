@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنامج حساب زوار القهوة المختصة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6f4e37 0%, #3e2723 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #4e342e;
+            color: #fff;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #ffd54f;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        
+        .period-section {
+            flex: 1;
+            min-width: 300px;
+            margin: 15px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .period-section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .morning-section {
+            background: linear-gradient(to bottom right, #fff8e1, #ffecb3);
+            border: 2px solid #ffd54f;
+        }
+        
+        .evening-section {
+            background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
+            border: 2px solid #64b5f6;
+        }
+        
+        .period-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            color: #4e342e;
+        }
+        
+        .period-title i {
+            margin-left: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #5d4037;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #a1887f;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: #4e342e;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(120, 85, 72, 0.2);
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .add-btn {
+            background: linear-gradient(to right, #43a047, #2e7d32);
+            color: white;
+        }
+        
+        .add-btn:hover {
+            background: linear-gradient(to right, #388e3c, #1b5e20);
+            transform: translateY(-2px);
+        }
+        
+        .end-btn {
+            background: linear-gradient(to right, #e53935, #c62828);
+            color: white;
+        }
+        
+        .end-btn:hover {
+            background: linear-gradient(to right, #d32f2f, #b71c1c);
+            transform: translateY(-2px);
+        }
+        
+        .stats-section {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .stats-title {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #4e342e;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #d7ccc8;
+            padding-bottom: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .stat-box {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4e342e;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #795548;
+        }
+        
+        .summary-section {
+            flex: 100%;
+            background: #4e342e;
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 15px;
+            text-align: center;
+        }
+        
+        .summary-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ffd54f;
+        }
+        
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .summary-stat {
+            margin: 15px;
+            min-width: 200px;
+        }
+        
+        .summary-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffd54f;
+        }
+        
+        .summary-label {
+            font-size: 1.1rem;
+            color: #d7ccc8;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(to right, #2196f3, #0d47a1);
+            color: white;
+        }
+        
+        .copy-btn:hover {
+            background: linear-gradient(to right, #1976d2, #002171);
+            transform: translateY(-3px);
+        }
+        
+        .reset-btn {
+            background: linear-gradient(to right, #9e9e9e, #424242);
+            color: white;
+        }
+        
+        .reset-btn:hover {
+            background: linear-gradient(to right, #757575, #212121);
+            transform: translateY(-3px);
+        }
+        
+        .customers-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+            border: 1px solid #d7ccc8;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        
+        .customer-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.1rem;
+        }
+        
+        .customer-item:last-child {
+            border-bottom: none;
+        }
+        
+        .customer-amount {
+            font-weight: 600;
+            color: #4e342e;
+        }
+        
+        .disabled {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #43a047;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .period-section {
+                min-width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-coffee"></i>
+            </div>
+            <h1>برنامج حساب زوار القهوة المختصة</h1>
+            <p class="subtitle">حساب عدد الزوار والمبيعات في فترتي الصباح والمساء</p>
+        </header>
+        
+        <div class="main-content">
+            <!-- فترة الصباح -->
+            <div class="period-section morning-section">
+                <div class="period-title">
+                    <i class="fas fa-sun"></i>
+                    <h2>فترة الصباح</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label for="morning-amount">المبلغ المدفوع (ريال سعودي):</label>
+                    <input type="number" id="morning-amount" min="1" placeholder="أدخل المبلغ">
+                </div>
+                
+                <button id="add-morning" class="btn add-btn">
+                    <i class="fas fa-plus-circle"></i> إضافة زبون
+                </button>
+                
+                <button id="end-morning" class="btn end-btn">
+                    <i class="fas fa-stop-circle"></i> إنهاء دوام الصباح
+                </button>
+                
+                <div class="stats-section">
+                    <h3 class="stats-title">إحصائيات الصباح</h3>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value" id="morning-visitors">0</div>
+                            <div class="stat-label">عدد الزوار</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="morning-total">0</div>
+                            <div class="stat-label">المبلغ الإجمالي (ر.س)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="customers-list" id="morning-customers">
+                        <div class="customer-item">
+                            <span>لا توجد معاملات حتى الآن</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- فترة المساء -->
+            <div class="period-section evening-section">
+                <div class="period-title">
+                    <i class="fas fa-moon"></i>
+                    <h2>فترة المساء</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label for="evening-amount">المبلغ المدفوع (ريال سعودي):</label>
+                    <input type="number" id="evening-amount" min="1" placeholder="أدخل المبلغ">
+                </div>
+                
+                <button id="add-evening" class="btn add-btn">
+                    <i class="fas fa-plus-circle"></i> إضافة زبون
+                </button>
+                
+                <button id="end-evening" class="btn end-btn">
+                    <i class="fas fa-stop-circle"></i> إنهاء دوام المساء
+                </button>
+                
+                <div class="stats-section">
+                    <h3 class="stats-title">إحصائيات المساء</h3>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value" id="evening-visitors">0</div>
+                            <div class="stat-label">عدد الزوار</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="evening-total">0</div>
+                            <div class="stat-label">المبلغ الإجمالي (ر.س)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="customers-list" id="evening-customers">
+                        <div class="customer-item">
+                            <span>لا توجد معاملات حتى الآن</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ملخص الإحصائيات -->
+            <div class="summary-section">
+                <h2 class="summary-title">ملخص الإحصائيات</h2>
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <div class="summary-value" id="total-visitors">0</div>
+                        <div class="summary-label">إجمالي عدد الزوار</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-value" id="total-amount">0</div>
+                        <div class="summary-label">إجمالي المبيعات (ر.س)</div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button id="copy-stats" class="action-btn copy-btn">
+                        <i class="fas fa-copy"></i> نسخ جميع الإحصائيات
+                    </button>
+                    <button id="reset-all" class="action-btn reset-btn">
+                        <i class="fas fa-redo"></i> إعادة تعيين البرنامج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast">تم نسخ الإحصائيات بنجاح!</div>
+    
+    <script>
+        // البيانات
+        let morningData = {
+            visitors: 0,
+            total: 0,
+            customers: [],
+            ended: false
+        };
+        
+        let eveningData = {
+            visitors: 0,
+            total: 0,
+            customers: [],
+            ended: false
+        };
+        
+        // عناصر DOM
+        const elements = {
+            morning: {
+                amount: document.getElementById('morning-amount'),
+                addBtn: document.getElementById('add-morning'),
+                endBtn: document.getElementById('end-morning'),
+                visitors: document.getElementById('morning-visitors'),
+                total: document.getElementById('morning-total'),
+                customers: document.getElementById('morning-customers')
+            },
+            evening: {
+                amount: document.getElementById('evening-amount'),
+                addBtn: document.getElementById('add-evening'),
+                endBtn: document.getElementById('end-evening'),
+                visitors: document.getElementById('evening-visitors'),
+                total: document.getElementById('evening-total'),
+                customers: document.getElementById('evening-customers')
+            },
+            summary: {
+                visitors: document.getElementById('total-visitors'),
+                amount: document.getElementById('total-amount')
+            },
+            copyBtn: document.getElementById('copy-stats'),
+            resetBtn: document.getElementById('reset-all'),
+            toast: document.getElementById('toast')
+        };
+        
+        // إضافة زبون للصباح
+        elements.morning.addBtn.addEventListener('click', () => {
+            if (morningData.ended) return;
+            
+            const amount = parseFloat(elements.morning.amount.value);
+            if (!amount || amount <= 0) {
+                showToast('الرجاء إدخال مبلغ صحيح', 'error');
+                return;
+            }
+            
+            morningData.visitors++;
+            morningData.total += amount;
+            morningData.customers.push(amount);
+            
+            updateMorningDisplay();
+            updateSummary();
+            elements.morning.amount.value = '';
+            showToast('تم إضافة زبون جديد لفترة الصباح', 'success');
+        });
+        
+        // إضافة زبون للمساء
+        elements.evening.addBtn.addEventListener('click', () => {
+            if (eveningData.ended) return;
+            
+            const amount = parseFloat(elements.evening.amount.value);
+            if (!amount || amount <= 0) {
+                showToast('الرجاء إدخال مبلغ صحيح', 'error');
+                return;
+            }
+            
+            eveningData.visitors++;
+            eveningData.total += amount;
+            eveningData.customers.push(amount);
+            
+            updateEveningDisplay();
+            updateSummary();
+            elements.evening.amount.value = '';
+            showToast('تم إضافة زبون جديد لفترة المساء', 'success');
+        });
+        
+        // إنهاء دوام الصباح
+        elements.morning.endBtn.addEventListener('click', () => {
+            morningData.ended = true;
+            elements.morning.amount.disabled = true;
+            elements.morning.addBtn.disabled = true;
+            elements.morning.addBtn.classList.add('disabled');
+            showToast('تم إنهاء دوام الصباح بنجاح', 'success');
+        });
+        
+        // إنهاء دوام المساء
+        elements.evening.endBtn.addEventListener('click', () => {
+            eveningData.ended = true;
+            elements.evening.amount.disabled = true;
+            elements.evening.addBtn.disabled = true;
+            elements.evening.addBtn.classList.add('disabled');
+            showToast('تم إنهاء دوام المساء بنجاح', 'success');
+        });
+        
+        // نسخ الإحصائيات
+        elements.copyBtn.addEventListener('click', () => {
+            const statsText = `إحصائيات محل القهوة المختصة:
+            
+فترة الصباح:
+- عدد الزوار: ${morningData.visitors}
+- إجمالي المبلغ: ${morningData.total.toFixed(2)} ر.س
+
+فترة المساء:
+- عدد الزوار: ${eveningData.visitors}
+- إجمالي المبلغ: ${eveningData.total.toFixed(2)} ر.س
+
+الإجمالي الكلي:
+- إجمالي الزوار: ${morningData.visitors + eveningData.visitors}
+- إجمالي المبيعات: ${(morningData.total + eveningData.total).toFixed(2)} ر.س`;
+
+            navigator.clipboard.writeText(statsText).then(() => {
+                showToast('تم نسخ الإحصائيات بنجاح!', 'success');
+            }).catch(err => {
+                showToast('حدث خطأ أثناء النسخ', 'error');
+            });
+        });
+        
+        // إعادة تعيين البرنامج
+        elements.resetBtn.addEventListener('click', () => {
+            if (confirm('هل أنت متأكد من رغبتك في إعادة تعيين جميع البيانات؟')) {
+                morningData = {
+                    visitors: 0,
+                    total: 0,
+                    customers: [],
+                    ended: false
+                };
+                
+                eveningData = {
+                    visitors: 0,
+                    total: 0,
+                    customers: [],
+                    ended: false
+                };
+                
+                updateMorningDisplay();
+                updateEveningDisplay();
+                updateSummary();
+                
+                elements.morning.amount.disabled = false;
+                elements.morning.addBtn.disabled = false;
+                elements.morning.addBtn.classList.remove('disabled');
+                
+                elements.evening.amount.disabled = false;
+                elements.evening.addBtn.disabled = false;
+                elements.evening.addBtn.classList.remove('disabled');
+                
+                showToast('تم إعادة تعيين البرنامج بنجاح', 'success');
+            }
+        });
+        
+        // تحديث عرض فترة الصباح
+        function updateMorningDisplay() {
+            elements.morning.visitors.textContent = morningData.visitors;
+            elements.morning.total.textContent = morningData.total.toFixed(2);
+            
+            if (morningData.customers.length > 0) {
+                elements.morning.customers.innerHTML = '';
+                morningData.customers.forEach((amount, index) => {
+                    const customerItem = document.createElement('div');
+                    customerItem.className = 'customer-item';
+                    customerItem.innerHTML = `
+                        <span>الزبون ${index + 1}</span>
+                        <span class="customer-amount">${amount.toFixed(2)} ر.س</span>
+                    `;
+                    elements.morning.customers.appendChild(customerItem);
+                });
+            } else {
+                elements.morning.customers.innerHTML = `
+                    <div class="customer-item">
+                        <span>لا توجد معاملات حتى الآن</span>
+                    </div>
+                `;
+            }
+        }
+        
+        // تحديث عرض فترة المساء
+        function updateEveningDisplay() {
+            elements.evening.visitors.textContent = eveningData.visitors;
+            elements.evening.total.textContent = eveningData.total.toFixed(2);
+            
+            if (eveningData.customers.length > 0) {
+                elements.evening.customers.innerHTML = '';
+                eveningData.customers.forEach((amount, index) => {
+                    const customerItem = document.createElement('div');
+                    customerItem.className = 'customer-item';
+                    customerItem.innerHTML = `
+                        <span>الزبون ${index + 1}</span>
+                        <span class="customer-amount">${amount.toFixed(2)} ر.س</span>
+                    `;
+                    elements.evening.customers.appendChild(customerItem);
+                });
+            } else {
+                elements.evening.customers.innerHTML = `
+                    <div class="customer-item">
+                        <span>لا توجد معاملات حتى الآن</span>
+                    </div>
+                `;
+            }
+        }
+        
+        // تحديث الملخص
+        function updateSummary() {
+            const totalVisitors = morningData.visitors + eveningData.visitors;
+            const totalAmount = morningData.total + eveningData.total;
+            
+            elements.summary.visitors.textContent = totalVisitors;
+            elements.summary.amount.textContent = totalAmount.toFixed(2);
+        }
+        
+        // عرض الإشعارات
+        function showToast(message, type) {
+            elements.toast.textContent = message;
+            
+            if (type === 'error') {
+                elements.toast.style.background = '#e53935';
+            } else {
+                elements.toast.style.background = '#43a047';
+            }
+            
+            elements.toast.classList.add('show');
+            
+            setTimeout(() => {
+                elements.toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // تهيئة البرنامج
+        updateMorningDisplay();
+        updateEveningDisplay();
+        updateSummary();
+    </script>
+</body>
+</html>
